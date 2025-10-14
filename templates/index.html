@@ -1,0 +1,51 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Code Review Assistant — Upload</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 3rem; }
+    .card { border: 1px solid #ddd; padding: 1rem; max-width: 800px; border-radius: 8px; }
+    label { display:block; margin-top: 0.75rem; }
+    textarea { width: 100%; height: 200px; }
+    .muted { color: #666; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Code Review Assistant — Upload code or paste code</h2>
+    <p class="muted">Max upload size: {{ max_upload_bytes }} bytes</p>
+    <form method="post" action="/review" enctype="multipart/form-data">
+      <label>
+        Upload file:
+        <input type="file" name="file" />
+      </label>
+      <label>
+        Or paste code:
+        <textarea name="code_text" placeholder="Paste code here..."></textarea>
+      </label>
+      <label>
+        Language (optional):
+        <input type="text" name="language" placeholder="python, javascript, java..." />
+      </label>
+      <label>
+        Save result to DB:
+        <input type="checkbox" name="save" value="true" />
+      </label>
+      <div style="margin-top:1rem;">
+        <button type="submit">Submit for Review</button>
+      </div>
+    </form>
+
+    <hr/>
+    <h3>Quick curl (upload file)</h3>
+    <pre>curl -F "file=@./example.py" -F "save=true" http://127.0.0.1:8000/review</pre>
+
+    <h3>Quick curl (paste code)</h3>
+    <pre>curl -d "code_text=$(cat example.py)" -d "save=true" -X POST http://127.0.0.1:8000/review</pre>
+
+    <p class="muted">You can view saved reports at <code>/reports</code>.</p>
+  </div>
+</body>
+</html>
