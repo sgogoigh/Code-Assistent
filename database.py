@@ -8,12 +8,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database URL
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./reviews.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set in the .env file")
 
 # Create engine
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+    echo = True, # logging query
 )
 
 # Session maker
@@ -31,10 +34,6 @@ def get_db():
     finally:
         db.close()
 
-
-# ----------------------------
-# Example Review model
-# ----------------------------
 class Review(Base):
     __tablename__ = "reviews"
 
