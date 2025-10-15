@@ -5,7 +5,7 @@ from datetime import datetime
 import shutil
 import os
 from typing import List
-
+from prometheus_fastapi_instrumentator import Instrumentator
 from schemas import ReviewCreate, ReviewOut
 from database import get_db, Base, engine, SessionLocal, Review  # assuming you have these
 
@@ -23,6 +23,11 @@ app = FastAPI(title="Code Review Assistant")
 def read_root():
     return {"message": "Welcome to Code Reviewer API"}
 
+@app.get("/health", summary="Health check", tags=["Monitoring"])
+def health_check():
+    return JSONResponse(content={"status": "ok", "uptime": "healthy"})
+
+Instrumentator().instrument(app).expose(app)
 
 import os
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
