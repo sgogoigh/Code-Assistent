@@ -27,6 +27,7 @@ def read_root():
 def health_check():
     return JSONResponse(content={"status": "ok", "uptime": "healthy"})
 
+# for metrics in prometheus
 Instrumentator().instrument(app).expose(app)
 
 import os
