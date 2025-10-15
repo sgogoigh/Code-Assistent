@@ -19,6 +19,10 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Code Review Assistant")
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to Code Reviewer API"}
+
 
 import os
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
